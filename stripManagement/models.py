@@ -94,7 +94,7 @@ class flightPlan(models.Model):
     users = models.ForeignKey(users, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.flight_num
+        return self.aircraft_id
 
     class Meta:
         db_table = 'flightPlan'
@@ -121,6 +121,7 @@ class strip(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     stripImage = models.ImageField(null=True, blank=True, upload_to='media')
     users = models.ForeignKey(users, on_delete=models.SET_NULL, null=True)
+    flight_plan = models.ForeignKey(flightPlan, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.aircraft_id

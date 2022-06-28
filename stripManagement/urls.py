@@ -10,5 +10,7 @@ urlpatterns = [
     path('', views.login_user, name='login'),
     path('register', views.register_user, name='register'),
     path('logout', views.logout, name='logout'),
+    path('flight/list_flight', views.list_flight, name='list_flight'),
+
     # path('sentry-debug/', trigger_error),
 ]

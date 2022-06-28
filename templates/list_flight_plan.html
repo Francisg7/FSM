@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+ <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title"> Liste des Plans de Vol</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-primary ">
+                      <th>
+                        Aeronef Identification
+                      </th>
+                      <th class="text-center">
+                        Flight Number
+                      </th>
+                      <th class="text-center">
+                        Company
+                      </th>
+                      <th class="text-center">
+                        Departure Airport
+                      </th>
+                      <th class="text-center">
+                        Destination Airport
+                      </th>
+                      <th class="text-center">
+                        Safety Airport
+                      </th>
+                      <th class="text-center">
+                        Estimated Departure Time
+                      </th>
+                    <th class="text-center">
+                        Estimated Arrival Time
+                      </th>
+                    <th class="text-center">
+                        Flight Level
+                      </th>
+                    <th class="text-center">
+                        Flight Route
+                      </th>
+                    <th class="text-center">
+                        Total Passengers
+                      </th>
+                    <th class="text-right">
+                        Action
+                      </th>
+                    </thead>
+                      {% for i in list_flight%}
+                    <tbody>
+                      <tr >
+                        <td >
+                            {{ i.aircraft_id}}
+                        </td>
+                        <td>
+                         {{ i.flight_num}}
+                        </td>
+                        <td>
+                          {{ i.company}}
+                        </td>
+                        <td>
+                          {{ i.departAirport}}
+                        </td>
+                          <td >
+                          {{ i.destAirport}}
+                        </td>
+                          <td>
+                          {{ i.safety_airport}}
+                        </td>
+                          <td >
+                          {{ i.estDepTime}}
+                        </td>
+                          <td>
+                          {{ i.estArrTime}}
+                        </td>
+                          <td >
+                          {{ i.flight_level}}
+                        </td>
+                          <td>
+                          {{ i.flight_route}}
+                        </td>
+                          <td>
+                          {{ i.totPassengers}}
+                        </td>
+                           <td  class="text-right">
+                            <p data-placement="top" data-toggle="tooltip" title1="Modifier" title2="Supprimer">
+                                <a href="{{i.id}}"><button class="btn btn-block btn-success" data-title="Modifier" data-toggle="modal" data-target="#modifier" >Modifier</button></a>
+                                 <a href="delete/{{ i.id }}"><button class="btn btn-danger " data-title="Supprimer" data-toggle="modal" data-target="#supprimer" >Supprimer</button></a>
+                            </p>
+                    </td>
+                 </tr>
+                    </tbody>
+                      {% endfor %}
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+ </div>
+
+{% endblock %}

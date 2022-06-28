@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-import stripManagement.models
+from stripManagement.models import *
 
 
 def index(request):
@@ -17,14 +17,14 @@ def register_user(request):
         lasttname = request.POST['first_name']
         email = request.POST['email']
         matricule = request.POST['matricule']
-        # phone_number = request.POST['tel']
+        phone = request.POST['tel']
         service = request.POST['service']
         password = request.POST['password']
 
-        user = stripManagement.models.users.objects.create(username=username, password=password, first_name=firstname,
+        user = users.objects.create(username=username, password=password, first_name=firstname,
                                                            last_name=lasttname,
-                                                            email=email, matricule=matricule,
-
+                                                           phone=phone, email=email, matricule=matricule,
+                                                           service=service
                                                            )
         print(user.save())
         if user is not None:
@@ -57,3 +57,11 @@ def logout(request):
     auth.logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect("/")
+
+
+def list_flight(request):
+    list_flight = flightPlan.objects.all()
+    return render(request, "list_flight_plan.html", {'list_flight': list_flight})
+
+def add_flight(request):
+    if request.method = "POST":
