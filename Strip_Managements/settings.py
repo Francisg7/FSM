@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +37,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrapform',
+    'crispy_forms',
+    'bootstrap_datepicker_plus',
     'stripManagement.apps.StripmanagementConfig',
+]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+DATE_INPUT_FORMATS = [
+
+        '%Y-%m-%d',
+        '%m/%d/%Y',
+        '%m/%d/%y',
+        '%b %d %Y',
+        '%b %d, %Y',
+        '%d %b %Y',
+        '%d %b, %Y',
+        '%B %d %Y',
+        '%B %d, %Y',
+        '%d %B %Y',
+        '%d %B, %Y',
+
 ]
 
 MIDDLEWARE = [
@@ -72,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Strip_Managements.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -85,7 +103,6 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -105,7 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -117,13 +133,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'../stripManagement/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../stripManagement/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -147,4 +162,3 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
-

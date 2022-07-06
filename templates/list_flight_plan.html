@@ -1,6 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
+    <br>
+    <br>
+    <br>
+  <div class="container">
+         <div class="topsearch">
+      <div class="container box">
+        <form class="form-inline" method="get">
+          <input id="company" type="text" class="form-control" name="company" placeholder="Company">
 
+          <div class="form-group">
+            <label for="datefrom">DateFrom:</label>
+            <input type="date" name="datefrom" id="datepicker" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="dateto">Dateto:</label>
+            <input type="date" name="dateto" id="datepicker1" class="form-control" >
+          </div>
+          <select class="form-control" id="sel1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+          <button type="submit" class="btn btn-info" name="srchBtn">search</button>
+        </form>
+        <br>
+      </div>
+    </div>
  <div class="content">
         <div class="row">
           <div class="col-md-12">
@@ -12,6 +39,9 @@
                 <div class="table-responsive">
                   <table class="table">
                     <thead class="text-primary ">
+                     <th>
+                        #
+                      </th>
                       <th>
                         Aeronef Identification
                       </th>
@@ -42,6 +72,9 @@
                     <th class="text-center">
                         Flight Route
                       </th>
+                     <th class="text-center">
+                        Flight Type
+                      </th>
                     <th class="text-center">
                         Total Passengers
                       </th>
@@ -51,7 +84,10 @@
                     </thead>
                       {% for i in list_flight%}
                     <tbody>
-                      <tr >
+                      <tr class="text-center">
+                          <td >
+                            {{ i.aeronef_id}}
+                        </td>
                         <td >
                             {{ i.aircraft_id}}
                         </td>
@@ -80,15 +116,37 @@
                           {{ i.flight_level}}
                         </td>
                           <td>
+                          {{ i.flight_type}}
+                        </td>
+                          <td>
                           {{ i.flight_route}}
                         </td>
                           <td>
                           {{ i.totPassengers}}
                         </td>
-                           <td  class="text-right">
+                           <td  class="text-center">
                             <p data-placement="top" data-toggle="tooltip" title1="Modifier" title2="Supprimer">
-                                <a href="{{i.id}}"><button class="btn btn-block btn-success" data-title="Modifier" data-toggle="modal" data-target="#modifier" >Modifier</button></a>
-                                 <a href="delete/{{ i.id }}"><button class="btn btn-danger " data-title="Supprimer" data-toggle="modal" data-target="#supprimer" >Supprimer</button></a>
+                                <a href="update_flight_plan/{{ i.aeronef_id }}/"><button class="btn btn-block btn-success nc-icon nc-ruler-pencil" data-title="Modifier" data-toggle="modal" data-target="#modifier" >Modifier</button></a>
+                                 <a href="delete_flight_plan/{{ i.aeronef_id }}/"><button class="btn btn-danger nc-icon nc-basket submit"   data-title="Supprimer"  data-target="#supprimer" >Supprimer</button></a>
+                               <form action="{% url 'delete_flight_plan' i.aeronef_id %}" method="POST">
+                               {% csrf_token %}
+                               <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content border-0">
+                                            <div class="modal-body p-0">
+                                                <div class="card border-0 p-sm-3 p-2 justify-content-center">
+                                                    <div class="card-header pb-0 bg-white border-0 "><div class="row"><div class="col ml-auto"><button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div> </div>
+                                                    <p class="font-weight-bold mb-2"> Are you sure you wanna delete this {{ i.aircraft_id }}?</p><p class="text-muted "> This change will reflect in your portal after this operation.</p>     </div>
+                                                    <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
+                                                        <div class="row justify-content-end no-gutters"><div class="col-auto"><button type="button" class="btn btn-primary text-muted" data-dismiss="modal">Cancel</button></div>
+                                                            <div class="col-auto"><button type="submit"class="btn btn-danger px-4" >Delete</button></div></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               </form>
                             </p>
                     </td>
                  </tr>
@@ -98,8 +156,31 @@
                 </div>
               </div>
             </div>
+{#          Ajouter Avec un fichier excel#}
+{#          <form  method="post" enctype="multipart/form-data">#}
+{#      <div class="file-upload" style="background-color:#56baed;">#}
+{#        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Your File</button>#}
+{#        <div class="image-upload-wrap">#}
+{#          <input class="file-upload-input" name="excelfile" type='file' onchange="readURL(this);" accept="application/msexcel"/>#}
+{#          <div class="drag-text">#}
+{#            <h3>Drag and drop a file or select add your file</h3>#}
+{#          </div>#}
+{#        </div>#}
+{#        <div class="file-upload-content">#}
+{#          <!--<img class="file-upload-image" src="#" alt="your image" />-->#}
+{#          <div class="image-title-wrap">#}
+{#            <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>#}
+{#          </div>#}
+{#        </div>#}
+{#        {% csrf_token %}#}
+{##}
+{#        <button type="submit" class="btn btn-primary mb-2" name="btn4">Show & Save</button>#}
+{#      </div>#}
+{#      <!-- <button type="submit" class="btn btn-warning mb-2" name="btn5">Save in DataBase</button> -->#}
+{#    </form>#}
           </div>
         </div>
  </div>
+   </div>
 
 {% endblock %}

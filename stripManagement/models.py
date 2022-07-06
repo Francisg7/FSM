@@ -1,26 +1,35 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.db import models
 
-
 # Create your models here.
+from django.urls import reverse
+
+
 class users(AbstractUser):
     Service = [("Previ-protec", "Prevision Protection"), ("VMA", "Aeorodrome  Meteorologie Survey "),
                ("Observateur", "Meteorological Observation"),
                ("AIM", "Airport Information Management"), ("IL", "Local Information"),
                ("IRE", "Radio Electric Infrastructure"),
                ("Facturation", "Facturation"), ("Telecom", "Telecom"), ("Tower", "Tower")]
+    AIM = 1
+    TOWER = 2
+    CU = 3
+
+    ROLE_CHOICES = ((AIM, 'AIM'), (TOWER, 'TOWER'), (CU, 'CU'))
 
     id = models.BigAutoField(primary_key=True)
     matricule = models.CharField(max_length=14, unique=True, default="")
-    #password = models.CharField(max_length=20)
+    # password = models.CharField(max_length=20)
     # first_name = models.CharField(max_length=20)
     # last_name = models.CharField(max_length=20)
     service = models.CharField(choices=Service, max_length=20, blank=True),
-    phone_number = models.IntegerField(max_length=12, blank=True, null=True),
+    phone = models.IntegerField(null=True, validators=[RegexValidator(r'^\d{1,10}$')])
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
     email = models.EmailField(max_length=20)
 
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'username']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'username', 'phone', 'service']
     USERNAME_FIELD = 'matricule'
 
     def __str__(self):
@@ -54,9 +63,10 @@ class users(AbstractUser):
     #     )
     #     return user
 
+
 class company(models.Model):
     company_id = models.BigAutoField(primary_key=True)
-    company_name = models.CharField(max_length=20)
+    company_name = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
         return self.company_name
@@ -68,18 +78,22 @@ class company(models.Model):
 
 class flightPlan(models.Model):
     aeronef_id = models.BigAutoField(primary_key=True)
-    aircraft_id = models.CharField(max_length=20)
+    aircraft_id = models.CharField(max_length=10, unique=True)
     # flight_rule = models.CharField(max_length=20, null=True)
-    # flight_type = models.CharField(max_length=20, null=True)
+    flight_type = models.CharField(max_length=10, null=True)
     # aeronef_type = models.CharField(max_length=20, null=True)
-    departAirport = models.CharField(max_length=20, null=True)
-    destAirport = models.CharField(max_length=20, null=True)
+    departAirport = models.CharField(max_length=4, null=True)
+    destAirport = models.CharField(max_length=4, null=True)
     estDepTime = models.TimeField(blank=True, null=True)
     estArrTime = models.TimeField(blank=True, null=True)
     # flight_speed = models.CharField(max_length=20, null=True)
-    flight_level = models.CharField(max_length=20, null=True)
+    flight_level = models.IntegerField(null=True)
     flight_route = models.CharField(max_length=20, null=True)
-    safety_airport = models.CharField(max_length=20, null=True)
+    flight_speed = models.IntegerField(null=True)
+    safety_airport = models.CharField(max_length=4, null=True)
+    transpondeur = models.CharField(max_length=4, null=True)
+    board_equipment = models.CharField(max_length=10, null=True)
+    turbulance = models.CharField(max_length=10, null=True)
     totPassengers = models.CharField(max_length=20, null=True)
     flight_num = models.CharField(max_length=20, null=True)
     dateFrom = models.DateField(blank=True, null=True)
@@ -104,17 +118,20 @@ class flightPlan(models.Model):
 class strip(models.Model):
     id = models.BigAutoField(primary_key=True)
     aircraft_id = models.CharField(max_length=20)
-    flight_rule = models.CharField(max_length=20, null=True)
+    # flight_rule = models.CharField(max_length=20, null=True)
     flight_type = models.CharField(max_length=20, null=True)
-    aeronef_type = models.CharField(max_length=20, null=True)
-    departAirport = models.CharField(max_length=20, null=True)
-    destAirport = models.CharField(max_length=20, null=True)
+    # aeronef_type = models.CharField(max_length=20, null=True)
+    departAirport = models.CharField(max_length=4, null=True)
+    destAirport = models.CharField(max_length=4, null=True)
     estDepTime = models.TimeField(blank=True, null=True)
     estArrTime = models.TimeField(blank=True, null=True)
-    flight_speed = models.CharField(max_length=20, null=True)
-    flight_level = models.CharField(max_length=20, null=True)
+    flight_speed = models.IntegerField(null=True)
+    flight_level = models.IntegerField(null=True)
     flight_route = models.CharField(max_length=20, null=True)
-    flight_num = models.CharField(max_length=20, null=True)
+    # flight_num = models.CharField(max_length=20, null=True)
+    transpondeur = models.CharField(max_length=4, null=True)
+    board_equipment = models.CharField(max_length=10, null=True)
+    tirbulance = models.CharField(max_length=10, null=True)
     dateFrom = models.DateField(blank=True, null=True)
     dateTo = models.DateField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)

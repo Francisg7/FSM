@@ -14,11 +14,29 @@
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href=" https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <!-- CSS Files -->
   <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
   <link href="{% static 'assets/css/paper-dashboard.css' %}" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="{% static 'assets/demo/demo.css' %}" rel="stylesheet" />
+       <style>
+      .file-upload {
+        width: 100%;
+      }
+      .image-upload-wrap {
+        border: 4px dashed #003771;
+      }
+      .image-upload-wrap:hover {
+        background-color: #026bd9;
+        border: 4px dashed #ffffff;
+        color: #fff;
+      }
+      .drag-text h3 {
+        text-align: center;
+        color: #FFFfff;
+      }
+    </style>
 </head>
 
 <body class="">
@@ -41,7 +59,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav accordion">
           <li class="active" >
-            <a href="#">
+            <a href="{% url 'home' %}">
               <i class="nc-icon nc-bank"></i>
               <p>Dashboard</p>
             </a>
@@ -54,7 +72,7 @@
 {#                  </p>#}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" >
-                  <a class="dropdown-item" href="#">Ajout d'un Plan de Vol</a>
+                  <a class="dropdown-item" href="{% url 'add_flight' %}">Ajout d'un Plan de Vol</a>
                   <a class="dropdown-item" href="{% url 'list_flight' %}">Liste des Plans de Vols</a>
                 </div>
               </li>
@@ -189,6 +207,7 @@
 </div>
         {% endfor %}
     {% endif %}
+    &nbsp
         {% block content %}
 
         {% endblock %}
@@ -234,6 +253,40 @@
       // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
       demo.initChartsPages();
     });
+
+
+    function readURL(input) {
+    if (input.files && input.files[0]) {
+
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('.image-upload-wrap').hide();
+
+        $('.file-upload-image').attr('src', e.target.result);
+        $('.file-upload-content').show();
+
+        $('.image-title').html(input.files[0].name);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+
+    } else {
+      removeUpload();
+    }
+  }
+
+  function removeUpload() {
+    $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+    $('.file-upload-content').hide();
+    $('.image-upload-wrap').show();
+  }
+  $('.image-upload-wrap').bind('dragover', function () {
+          $('.image-upload-wrap').addClass('image-dropping');
+      });
+      $('.image-upload-wrap').bind('dragleave', function () {
+          $('.image-upload-wrap').removeClass('image-dropping');
+  });
   </script>
 </body>
 
